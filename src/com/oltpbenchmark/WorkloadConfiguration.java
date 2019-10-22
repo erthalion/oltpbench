@@ -51,6 +51,7 @@ public class WorkloadConfiguration {
 	private double scaleFactor = 1.0;
 	private double selectivity = -1.0;
 	private int terminals;
+	private int commitCount;
 	private int loaderThreads = ThreadUtil.availableProcessors();
 	private int numTxnTypes;
     private TraceReader traceReader = null;
@@ -239,6 +240,14 @@ public class WorkloadConfiguration {
 
 	public int getTerminals() {
 		return terminals;
+	}
+	
+	public void setCommitCount(int commitCount) {
+		this.commitCount = commitCount;
+	}
+
+	public int getCommitCount() {
+		return commitCount;
 	}
 	
 	public TransactionTypes getTransTypes() {

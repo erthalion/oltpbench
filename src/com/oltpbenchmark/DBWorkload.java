@@ -220,6 +220,10 @@ public class DBWorkload {
             int terminals = xmlConfig.getInt("terminals[not(@bench)]", 0);
             terminals = xmlConfig.getInt("terminals" + pluginTest, terminals);
             wrkld.setTerminals(terminals);
+
+            int commitCount = xmlConfig.getInt("commitcount[not(@bench)]", 0);
+            commitCount = xmlConfig.getInt("commitcount" + pluginTest, terminals);
+            wrkld.setCommitCount(commitCount);
             
             if (xmlConfig.containsKey("loaderThreads")) {
                 int loaderThreads = xmlConfig.getInt("loaderThreads");

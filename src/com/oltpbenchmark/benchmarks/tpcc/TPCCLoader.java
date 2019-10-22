@@ -65,9 +65,15 @@ public class TPCCLoader extends Loader<TPCCBenchmark> {
             //where would be fun in that?
             numWarehouses = 1;
         }
+
+        commitCount = workConf.getCommitCount();
+        if (commitCount <= 0) {
+            commitCount = TPCCConfig.configCommitCount;
+        }
     }
     
     private int numWarehouses = 0;
+    private int commitCount = 0;
     private static final int FIRST_UNPROCESSED_O_ID = 2101;
     
     @Override
@@ -197,7 +203,7 @@ public class TPCCLoader extends Loader<TPCCBenchmark> {
                 itemPrepStmt.addBatch();
                 batchSize++;
 
-                if (batchSize == TPCCConfig.configCommitCount) {
+                if (batchSize == commitCount) {
                     itemPrepStmt.executeBatch();
                     itemPrepStmt.clearBatch();
                     transCommit(conn);
@@ -331,7 +337,7 @@ public class TPCCLoader extends Loader<TPCCBenchmark> {
 				stckPrepStmt.setString(idx++, TPCCUtil.randomStr(24));
 				stckPrepStmt.setString(idx++, TPCCUtil.randomStr(24));
 				stckPrepStmt.addBatch();
-				if ((k % TPCCConfig.configCommitCount) == 0) {
+				if ((k % commitCount) == 0) {
 					stckPrepStmt.executeBatch();
 					stckPrepStmt.clearBatch();
 					transCommit(conn);
@@ -506,7 +512,7 @@ public class TPCCLoader extends Loader<TPCCBenchmark> {
 					histPrepStmt.setString(idx++, history.h_data);
 					histPrepStmt.addBatch();
 
-					if ((k % TPCCConfig.configCommitCount) == 0) {
+					if ((k % commitCount) == 0) {
 						custPrepStmt.executeBatch();
 						histPrepStmt.executeBatch();
 						custPrepStmt.clearBatch();
@@ -652,7 +658,7 @@ public class TPCCLoader extends Loader<TPCCBenchmark> {
 			            orlnPrepStmt.setString(idx++, order_line.ol_dist_info);
 			            orlnPrepStmt.addBatch();
 
-						if ((k % TPCCConfig.configCommitCount) == 0) {
+						if ((k % commitCount) == 0) {
 							ordrPrepStmt.executeBatch();
 							if (newOrderBatch > 0) {
 							    nworPrepStmt.executeBatch();
